@@ -1,98 +1,114 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
+import { useTheme } from "@/hooks/use-theme";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function App() {
+  const theme = useTheme();
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
+    <SafeAreaView style={{ flex: 1 }}>
+      <ThemedView style={styles.container}>
+        <View style={styles.header}>
+          <ThemedText type="smallBold" themeColor="textSecondary">
+            MIRVANA
           </ThemedText>
-        </ThemedView>
+          <ThemedText type="small" themeColor="textSecondary">
+            Your quiet space
+          </ThemedText>
+        </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
+        <View style={styles.content}>
+          <View style={[styles.mark, { backgroundColor: theme.primary }]}>
+            <ThemedText style={[styles.markText, { color: theme.accent }]}>
+              M
+            </ThemedText>
+          </View>
+          <ThemedText
+            type="title"
+            style={[styles.title, { color: theme.heading }]}
+          >
+            Come back to yourself.
+          </ThemedText>
+          <ThemedText themeColor="textSecondary" style={styles.description}>
+            A simple place to slow down, reflect, and make space for what
+            matters.
+          </ThemedText>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: theme.primary }]}
+            activeOpacity={0.8}
+          >
+            <ThemedText style={[styles.buttonText, { color: theme.onPrimary }]}>
+              Begin your journey
+            </ThemedText>
+          </TouchableOpacity>
+        </View>
+
+        <ThemedText
+          type="small"
+          themeColor="textSecondary"
+          style={styles.footer}
+        >
+          Take a breath. Start here.
         </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+      </ThemedView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    padding: 28,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  content: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    maxWidth: 520,
+    width: "100%",
+    alignSelf: "center",
+  },
+  mark: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 28,
+  },
+  markText: {
+    fontSize: 24,
+    fontWeight: "700",
   },
   title: {
-    textAlign: 'center',
+    maxWidth: 460,
+    fontSize: 46,
+    lineHeight: 52,
   },
-  code: {
-    textTransform: 'uppercase',
+  description: {
+    maxWidth: 390,
+    marginTop: 18,
+    fontSize: 17,
+    lineHeight: 26,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  button: {
+    borderRadius: 8,
+    paddingHorizontal: 22,
+    paddingVertical: 15,
+    marginTop: 32,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  footer: {
+    textAlign: "center",
   },
 });
