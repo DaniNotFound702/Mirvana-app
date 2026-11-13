@@ -1,6 +1,6 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 
 export default function LoginScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -9,12 +9,7 @@ export default function LoginScreen() {
   if (!permission) return <View style={styles.container} />;
 
   if (!permission.granted) {
-    return (
-      <View style={styles.container}>
-        <Text>Camera permission is needed to scan a QR code.</Text>
-        <Button title="Allow camera" onPress={requestPermission} />
-      </View>
-    );
+    requestPermission();
   }
 
   return (
